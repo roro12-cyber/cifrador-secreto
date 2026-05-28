@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Cifrador Secreto</title>
+
+<style>
+body{
+    font-family: Arial;
+    background:#1e1e1e;
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+
+input, textarea{
+    width:80%;
+    padding:10px;
+    margin:10px;
+    border-radius:5px;
+    border:none;
+}
+
+button{
+    padding:10px 20px;
+    margin:5px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.codificar{background:#4CAF50; color:white;}
+.decodificar{background:#2196F3; color:white;}
+
+#resultado{
+    margin-top:20px;
+    font-size:18px;
+    color:yellow;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🔐 Cifrador Secreto WEB</h1>
+
+<input id="clave" type="password" placeholder="Clave secreta">
+
+<br>
+
+<textarea id="texto" placeholder="Texto o código"></textarea>
+
+<br>
+
+<button class="codificar" onclick="codificar()">Codificar</button>
+<button class="decodificar" onclick="decodificar()">Decodificar</button>
+
+<h3>Resultado:</h3>
+<div id="resultado"></div>
+
+<script>
+
+const CLAVE_SECRETA = "2580";
+
+// Diccionario
+const diccionario = {
+"A":"83","B":"24","C":"56","D":"18","E":"91",
+"F":"42","G":"68","H":"14","I":"37","J":"62",
+"K":"48","L":"26","M":"72","N":"34","Ñ":"50",
+"O":"77","P":"16","Q":"64","R":"28","S":"92",
+"T":"46","U":"59","V":"82","W":"38","X":"52",
+"Y":"66","Z":"94"," ":"00"
+};
+
+// inverso
+const inverso = {};
+for(let k in diccionario){
+    inverso[diccionario[k]] = k;
+}
+
+// validar clave
+function validarClave(clave){
+    return clave === CLAVE_SECRETA;
+}
+
+// CODIFICAR
+function codificar(){
+    let texto = document.getElementById("texto").value.toUpperCase();
+    let clave = document.getElementById("clave").value;
+
+    if(!validarClave(clave)){
+        document.getElementById("resultado").innerText = "❌ Clave incorrecta";
+        return;
+    }
+
+    let res = [];
+
+    for(let l of texto){
+        if(diccionario[l]){
+            res.push(diccionario[l]);
+        } else {
+            res.push("??");
+        }
+    }
+
+    document.getElementById("resultado").innerText = res.join("-");
+}
+
+// DECODIFICAR
+function decodificar(){
+    let codigo = document.getElementById("texto").value.split("-");
+    let clave = document.getElementById("clave").value;
+
+    if(!validarClave(clave)){
+        document.getElementById("resultado").innerText = "❌ Clave incorrecta";
+        return;
+    }
+
+    let res = [];
+
+    for(let n of codigo){
+        if(inverso[n]){
+            res.push(inverso[n]);
+        } else {
+            res.push("?");
+        }
+    }
+
+    document.getElementById("resultado").innerText = res.join("");
+}
+
+</script>
+
+</body>
+</html>
